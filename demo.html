@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>demo</title>
+    <script type="application/javascript" src="src/js-tasker.min.js"></script>
+</head>
+<body>
+
+<select id="echo" style="height: 300px;" multiple></select>
+
+<script type="application/javascript">
+    if (!window.console) {
+        window.console = {};
+    }
+    var echoBox = document.getElementById('echo');
+    window.console.log = function (input) {
+        var option = document.createElement('option');
+        option.innerHTML = [new Date(),' ',input].join('');
+        echoBox.appendChild(option)
+    }
+</script>
+<script type="application/javascript" src="src/demo.js"></script>
+</body>
+</html>
