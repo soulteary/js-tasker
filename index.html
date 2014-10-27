@@ -1,6 +1,6 @@
 <!doctype html>
 <html>
-  <head>
+<head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <title>Js-tasker by soulteary</title>
@@ -9,58 +9,83 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
     <script src="javascripts/respond.js"></script>
     <!--[if lt IE 9]>
-      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
     <!--[if lt IE 8]>
     <link rel="stylesheet" href="stylesheets/ie.css">
     <![endif]-->
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <script type="application/javascript" src="src/js-tasker.min.js"></script>
 
-  </head>
-  <body>
-      <div id="header">
-        <nav>
-          <li class="fork"><a href="https://github.com/soulteary/js-tasker">View On GitHub</a></li>
-          <li class="downloads"><a href="https://github.com/soulteary/js-tasker/zipball/master">ZIP</a></li>
-          <li class="downloads"><a href="https://github.com/soulteary/js-tasker/tarball/master">TAR</a></li>
-          <li class="title">DOWNLOADS</li>
-        </nav>
-      </div><!-- end header -->
+</head>
+<body>
+<div id="header">
+    <nav>
+        <li class="fork"><a href="https://github.com/soulteary/js-tasker">View On GitHub</a></li>
+        <li class="downloads"><a href="https://github.com/soulteary/js-tasker/zipball/master">ZIP</a></li>
+        <li class="downloads"><a href="https://github.com/soulteary/js-tasker/tarball/master">TAR</a></li>
+        <li class="title">DOWNLOADS</li>
+    </nav>
+</div>
+<!-- end header -->
 
-    <div class="wrapper">
+<div class="wrapper">
 
-      <section>
+    <section>
         <div id="title">
-          <h1>Js-tasker</h1>
-          <p>一个随便写的js tasker。</p>
-          <hr>
-          <span class="credits left">Project maintained by <a href="https://github.com/soulteary">soulteary</a></span>
-          <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="https://twitter.com/michigangraham">mattgraham</a></span>
+            <h1>Js-tasker</h1>
+
+            <p>一个随便写的js tasker。</p>
+            <hr>
+            <span class="credits left">Project maintained by <a href="https://github.com/soulteary">soulteary</a></span>
+            <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a
+                    href="https://twitter.com/michigangraham">mattgraham</a></span>
         </div>
 
+
+        <select id="echo" style="height: 300px;" multiple></select>
+
+        <script type="application/javascript">
+            if (!window.console) {
+                window.console = {};
+            }
+            var echoBox = document.getElementById('echo');
+            window.console.log = function (input) {
+                var option = document.createElement('option');
+                option.innerHTML = [new Date(), ' ', input].join('');
+                echoBox.appendChild(option)
+            }
+        </script>
+        <script type="application/javascript" src="src/demo.js"></script>
+
+
         <h1>
-<a name="js-tasker" class="anchor" href="#js-tasker"><span class="octicon octicon-link"></span></a>js-tasker</h1>
+            <a name="js-tasker" class="anchor" href="#js-tasker"><span class="octicon octicon-link"></span></a>js-tasker
+        </h1>
 
-<p>一个随便写的js tasker。</p>
+        <p>一个随便写的js tasker。</p>
 
-<p>支持延迟执行，支持依赖执行。</p>
+        <p>支持延迟执行，支持依赖执行。</p>
 
-<h2>
-<a name="%E6%9C%89%E9%97%AE%E9%A2%98%E5%8F%8D%E9%A6%88" class="anchor" href="#%E6%9C%89%E9%97%AE%E9%A2%98%E5%8F%8D%E9%A6%88"><span class="octicon octicon-link"></span></a>有问题反馈</h2>
+        <h2>
+            <a name="%E6%9C%89%E9%97%AE%E9%A2%98%E5%8F%8D%E9%A6%88" class="anchor"
+               href="#%E6%9C%89%E9%97%AE%E9%A2%98%E5%8F%8D%E9%A6%88"><span class="octicon octicon-link"></span></a>有问题反馈
+        </h2>
 
-<p>在使用中有任何问题，欢迎反馈给我，可以用以下联系方式跟我交流：
-（当然你也可以直接提交合并，我会看你的提交内容，核实并更新内容的）</p>
+        <p>在使用中有任何问题，欢迎反馈给我，可以用以下联系方式跟我交流：
+            （当然你也可以直接提交合并，我会看你的提交内容，核实并更新内容的）</p>
 
-<ul>
-<li>邮件(soulteary#qq.com, 把#换成@)</li>
-<li>QQ: 416544937</li>
-<li>weibo: <a href="http://weibo.com/firendless">@soulteary</a>
-</li>
-</ul>
-      </section>
+        <ul>
+            <li>邮件(soulteary#qq.com, 把#换成@)</li>
+            <li>QQ: 416544937</li>
+            <li>weibo: <a href="http://weibo.com/firendless">@soulteary</a>
+            </li>
+        </ul>
+    </section>
 
-    </div>
-    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
-    
-  </body>
+</div>
+<!--[if !IE]>
+<script>fixScale(document);</script><![endif]-->
+
+</body>
 </html>
