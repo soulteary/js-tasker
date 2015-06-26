@@ -1,0 +1,27 @@
+{
+  "name": "js-tasker",
+  "version": "1.0.0",
+  "description": "simple tasker.",
+  "main": "Gulpfile.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/soulteary/js-tasker.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/soulteary/js-tasker/issues"
+  },
+  "homepage": "https://github.com/soulteary/js-tasker",
+  "devDependencies": {
+    "gulp": "^3.9.0",
+    "gulp-concat": "^2.6.0",
+    "gulp-directory-sync": "^1.0.0",
+    "gulp-replace": "^0.5.3",
+    "gulp-uglyfly": "^1.4.2",
+    "gulp-util": "^3.0.6"
+  }
+}

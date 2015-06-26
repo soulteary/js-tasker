@@ -1,0 +1,15 @@
+.idea/
+*.iml
+coverage/
+node_modules/
+test/temp
+demo/assets/js/js-tasker.js
+
+.DS_Store
+*.db
+*.bak
+*.tmp
+*.cmd
+~*
+
+resource
