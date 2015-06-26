@@ -1,9 +1,9 @@
 /* global window, console */
-(function (win, undefined) {
+(function (win, DEBUG, undefined) {
     'use strict';
 
-    var DEBUG = true;
     DEBUG = DEBUG && window.console && console.log;
+
     var VER = '20150626';
 
     /**
@@ -40,6 +40,7 @@
     }
 
     var delayQueue = [];
+    var depend = {};
 
     /**
      * 用处理计划任务的方式去处理页面中的事物，这些解耦或许会好点？
@@ -47,7 +48,6 @@
      * 但是如果有的数据异常，之前的事情不想做了，那么也可以删除队列。
      */
     var task = {
-        depend      : {},
         __check__   : function (cmd) {
             var protectList = ['__check__', 'exec', 'kill', 'add'];
             if (inArray(cmd, protectList) !== -1) {
@@ -65,34 +65,34 @@
                     /**
                      * 有依赖先执行依赖策略
                      */
-                    if (this.depend[cmd] && this.depend[cmd].mask) {
-                        for (var item in this.depend[cmd]) {
-                            if (this.depend[cmd].hasOwnProperty(item)) {
-                                if (inArray(i, this.depend[cmd][item].mask) !== -1) {
-                                    if (this.depend[cmd][item].host !== undefined) {
+                    if (depend[cmd] && depend[cmd].mask) {
+                        for (var item in depend[cmd]) {
+                            if (depend[cmd].hasOwnProperty(item)) {
+                                if (inArray(i, depend[cmd][item].mask) !== -1) {
+                                    if (depend[cmd][item].host !== undefined) {
                                         if (DEBUG) {
                                             console.log('#任务正在执行：', title);
                                         }
-                                        if (task[cmd][this.depend[cmd][item].host] !== task[cmd][this.depend[cmd][item].mask]) {
-                                            task[cmd][this.depend[cmd][item].host] && task[cmd][this.depend[cmd][item].host].call(),
-                                            task[cmd][this.depend[cmd][item].mask] && task[cmd][this.depend[cmd][item].mask].call(),
-                                                task.kill(cmd, this.depend[cmd][item].mask),
-                                                task.kill(cmd, this.depend[cmd][item].host);
+                                        if (task[cmd][depend[cmd][item].host] !== task[cmd][depend[cmd][item].mask]) {
+                                            task[cmd][depend[cmd][item].host] && task[cmd][depend[cmd][item].host].call(),
+                                            task[cmd][depend[cmd][item].mask] && task[cmd][depend[cmd][item].mask].call(),
+                                                task.kill(cmd, depend[cmd][item].mask),
+                                                task.kill(cmd, depend[cmd][item].host);
                                         } else {
-                                            task[cmd][this.depend[cmd][item].host] && task[cmd][this.depend[cmd][item].host].call(), task.kill(cmd, this.depend[cmd][item].host);
+                                            task[cmd][depend[cmd][item].host] && task[cmd][depend[cmd][item].host].call(), task.kill(cmd, depend[cmd][item].host);
                                         }
                                     }
                                 }
                             }
                         }
-                    } else if (this.depend[cmd] && !this.depend[cmd].mask) {
-                        if (this.depend[cmd].host !== undefined) {
+                    } else if (depend[cmd] && !depend[cmd].mask) {
+                        if (depend[cmd].host !== undefined) {
                             if (DEBUG) {
                                 console.log('#任务正在执行：', title);
                             }
-                            task[cmd][this.depend[cmd].host] && task[cmd][this.depend[cmd].host].call(), task.kill(cmd, this.depend[cmd].host);
+                            task[cmd][depend[cmd].host] && task[cmd][depend[cmd].host].call(), task.kill(cmd, depend[cmd].host);
                         }
-                    } else if (!this.depend[cmd]) {
+                    } else if (!depend[cmd]) {
                         if (DEBUG) {
                             console.log('#任务正在执行[无依赖]：', title);
                         }
@@ -145,11 +145,11 @@
                             if (DEBUG) {
                                 console.log('#更新依赖：', title);
                             }
-                            this.depend[assign] = this.depend[assign] || {};
-                            if (this.depend[assign].host && task[cmd][this.depend[assign].host]) {
-                                this.kill(task[cmd], this.depend[assign].host);
+                            depend[assign] = depend[assign] || {};
+                            if (depend[assign].host && task[cmd][depend[assign].host]) {
+                                this.kill(task[cmd], depend[assign].host);
                             }
-                            this.depend[assign].host = inArray(func, task[cmd]);
+                            depend[assign].host = inArray(func, task[cmd]);
                             if (trigger === true) {
                                 exec(cmd);
                             }
@@ -162,9 +162,9 @@
                             if (DEBUG) {
                                 console.log('#调用依赖：', title);
                             }
-                            if (this.depend[assign]) {
-                                task[cmd][this.depend[assign]].call(null);
-                                delete this.depend[assign];
+                            if (depend[assign]) {
+                                task[cmd][depend[assign]].call(null);
+                                delete depend[assign];
                                 /**
                                  * 这里或许需要把关联数组内的函数也全部执行一遍
                                  */
@@ -172,9 +172,9 @@
                                     exec(cmd);
                                 }
                             } else {
-                                this.depend[assign] = {};
-                                this.depend[assign].mask = this.depend[assign].mask || [];
-                                this.depend[assign].mask.push(inArray(func, task[cmd]));
+                                depend[assign] = {};
+                                depend[assign].mask = depend[assign].mask || [];
+                                depend[assign].mask.push(inArray(func, task[cmd]));
                             }
                             break;
                     }
@@ -199,7 +199,7 @@
         },
         delay       : function (func, time) {
             if (func) {
-                if (!time || !isNaN(time)) {
+                if (!time || isNaN(time)) {
                     time = 1000;
                 }
                 delayQueue.push([function () {
@@ -225,4 +225,4 @@
 
     win.task = task;
 
-})(window);
+})(window, false);
