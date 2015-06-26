@@ -4,7 +4,7 @@
 
     var DEBUG = true;
     DEBUG = DEBUG && window.console && console.log;
-    var VER = '20141027';
+    var VER = '20150626';
 
     /**
      * 添加inArray工具方法
@@ -39,14 +39,16 @@
         return;
     }
 
+    var delayQueue = [];
+
     /**
      * 用处理计划任务的方式去处理页面中的事物，这些解耦或许会好点？
      * 有的时候我们会添加很多任务，但是不一定要立即执行，有的可能会先添加，然后等待某一个事件添加完成后才全部执行。
      * 但是如果有的数据异常，之前的事情不想做了，那么也可以删除队列。
      */
     var task = {
-        depend    : {},
-        __check__ : function (cmd) {
+        depend      : {},
+        __check__   : function (cmd) {
             var protectList = ['__check__', 'exec', 'kill', 'add'];
             if (inArray(cmd, protectList) !== -1) {
                 throw Error('THIS METHOD DO NOT ALLOW REWRITE.');
@@ -54,7 +56,7 @@
                 return true;
             }
         },
-        exec      : function (cmd, title) {
+        exec        : function (cmd, title) {
             if (!this.__check__(cmd)) {
                 return false;
             }
@@ -102,7 +104,7 @@
 
             }
         },
-        add       : function (options) {
+        add         : function (options) {
             var cmd = options.cmd;
             /**
              * 默认空事件
@@ -183,7 +185,7 @@
                 }
             }
         },
-        kill      : function (cmd, i) {
+        kill        : function (cmd, i) {
             if (!this.__check__(cmd)) {
                 return false;
             }
@@ -195,7 +197,30 @@
                 console.log('#删除了一个任务。');
             }
         },
-        version   : VER
+        delay       : function (func, time) {
+            if (func) {
+                if (!time || !isNaN(time)) {
+                    time = 1000;
+                }
+                delayQueue.push([function () {
+                    func();
+                    task.next();
+                }, time]);
+            }
+            return task;
+        },
+        next        : function () {
+            delayQueue.length && win.setTimeout.apply(null, delayQueue.shift());
+            return task;
+        },
+        start       : function () {
+            delayQueue.length && win.setTimeout.apply(null, delayQueue.shift());
+            return task;
+        },
+        _checkQueue : function () {
+
+        },
+        version     : VER
     };
 
     win.task = task;
